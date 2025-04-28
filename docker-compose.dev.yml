@@ -1,0 +1,44 @@
+services:
+  postgres:
+    extends:
+      file: docker-compose.yml
+      service: postgres
+
+  redis:
+    extends:
+      file: docker-compose.yml
+      service: redis
+
+  backend:
+    build:
+      context: ./packages/backend
+      dockerfile: Dockerfile
+      target: builder      # ← grab the builder stage (with dev-deps)
+    volumes:
+      - ./packages/backend:/app
+      - /app/node_modules   # keep container’s node_modules
+    env_file:
+      - .env
+      - ./packages/backend/.env
+    command: npm run start:dev
+    ports:
+      - "${BACKEND_PORT}:3001"
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+      target: builder      # ← use builder stage (with dev-deps)
+    volumes:
+      - ./packages/frontend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    command: npm run dev
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    depends_on:
+      - backend
