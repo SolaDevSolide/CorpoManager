@@ -1,5 +1,5 @@
 ---
-name: "🚀 <Short, descriptive title>"
+name: "Feature Template"
 about: "<Brief summary of the feature to be implemented>"
 title: ''
 labels: feature
