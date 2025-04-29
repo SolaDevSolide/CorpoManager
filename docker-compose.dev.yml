@@ -3,11 +3,21 @@ services:
     extends:
       file: docker-compose.yml
       service: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     extends:
       file: docker-compose.yml
       service: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -24,8 +34,16 @@ services:
     ports:
       - "${BACKEND_PORT}:3001"
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+# TODO: Implement health endpoint in the backend
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:3001/health" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
 
   frontend:
     build:
@@ -41,4 +59,5 @@ services:
     ports:
       - "${FRONTEND_PORT}:3000"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy

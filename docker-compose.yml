@@ -12,6 +12,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -25,6 +30,11 @@ services:
              fi"
     ports:
       - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -34,10 +44,18 @@ services:
     env_file:
       - .env
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - "${BACKEND_PORT}:3001"
+# TODO: Implement health endpoint in the backend
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:3001/health" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
 
   frontend:
     build:
@@ -46,7 +64,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
       - "${FRONTEND_PORT}:3000"
 
