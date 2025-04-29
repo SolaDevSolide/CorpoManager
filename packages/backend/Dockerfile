@@ -2,18 +2,20 @@
 FROM node:23-alpine AS builder
 WORKDIR /app
 
+# Install curl without caching apk indexes
+RUN apk add --no-cache curl
+
 # 1. Install deps (including dev-deps)
 COPY package*.json ./
 RUN npm ci
 
-# 2. Copy your Prisma schema **and** your .env so prisma generate can read DATABASE_URL
+# 2. Copy the Prisma schema so prisma can generate
 COPY prisma ./prisma
-COPY .env .env
 
 # 3. Generate the Prisma client
 RUN npx prisma generate
 
-# 4. Copy the rest of your source and build
+# 4. Copy the rest of the source and build
 COPY . .
 RUN npm run build
 
