@@ -1,0 +1,18 @@
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  background-image: linear-gradient(135deg, var(--ifm-color-primary-lightest), var(--ifm-color-primary-darkest));
+  color: var(--ifm-hero-text-color);
+}
+
+.buttons {
+  margin-top: 2rem;
+}
+
+.hero__text {
+  color: var(--ifm-hero-text-color);
+}
+
+[data-theme='dark'] .hero__text {
+  color: var(--ifm-font-color-base);
+}
