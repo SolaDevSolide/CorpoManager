@@ -14,7 +14,7 @@ const config: Config = {
   // GitHub pages deployment config
   organizationName: 'SolaDevSolide', // GitHub org/user
   projectName: 'CorpoManager', // GitHub repo
-  deploymentBranch: 'gh-pages',
+  deploymentBranch: 'gh-pages', // The default
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
