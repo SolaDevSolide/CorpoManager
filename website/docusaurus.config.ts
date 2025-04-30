@@ -81,10 +81,10 @@ const config: Config = {
               label: 'Environment Variables',
               to: '/CorpoManager/docs/environment-variables',
             },
-            {
-              label: 'Feature Docs',
-              to: '/CorpoManager/docs/features/auth',
-            },
+            // {
+            //   label: 'Feature Docs',
+            //   to: '/CorpoManager/docs/features/auth',
+            // },
           ],
         },
         {
