@@ -1,0 +1,11 @@
+{
+  "name": "star-citizen-corp-manager",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "website"
+  ],
+  "scripts": {
+    "docs": "npm --workspace website run start:dev"
+  }
+}
