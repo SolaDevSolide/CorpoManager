@@ -33,3 +33,33 @@
   --ifm-font-color-base: #ffffff;
   --ifm-hero-text-color: #ffffff;
 }
+
+
+.footer__links {
+  display: flex;
+  justify-content: center;  /* centers the two columns */
+  gap: 4rem;                 /* adds spacing between them */
+  flex-wrap: wrap;
+}
+
+.footer__col {
+  min-width: 180px;
+  text-align: left;
+}
+
+.footer__bottom {
+  text-align: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .footer__links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__col {
+    text-align: center;
+  }
+}
