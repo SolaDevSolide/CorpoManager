@@ -139,7 +139,7 @@ npm run docs            # Start Docusaurus docs site (from root)
 ## 🤝 Contributing
 
 1. Fork the repo & create a feature branch
-2. Follow the [contributing guide](https://SolaDevSolide.github.io/CorpoManager/contributing)
+2. Follow the [contributing guide](https://soladevsolide.github.io/CorpoManager/docs/CONTRIBUTING)
 3. Write tests and documentation for your changes
 4. Open a Pull Request
 
