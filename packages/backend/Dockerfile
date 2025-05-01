@@ -1,9 +1,9 @@
 # ─── Stage 1: build ─────────────────────────────────────────────────────
-FROM node:23-alpine AS builder
+FROM node:23 AS builder
 WORKDIR /app
 
 # Install curl without caching apk indexes
-RUN apk add --no-cache curl
+#RUN apk add --no-cache curl
 
 # 1. Install deps (including dev-deps)
 COPY package*.json ./
