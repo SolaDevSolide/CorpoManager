@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'packages/backend/**'
+  pull_request:
+    paths:
+      - 'packages/backend/**'
+
+jobs:
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    # All `run:` steps will execute in packages/backend
+    defaults:
+      run:
+        working-directory: packages/backend
+
+    strategy:
+      matrix:
+        node: [18]
+
+    steps:
+      # 1) Check out the repo
+      - uses: actions/checkout@v3
+
+      # 2) Set up Node.js
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      # 3) Cache npm’s cache folder for faster installs
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('packages/backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 4) Install only the backend’s dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 5) Cache Jest’s compiled snapshots & transforms
+      - name: Cache Jest
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache/jest
+          key: ${{ runner.os }}-jest-${{ hashFiles('packages/backend/jest.config.ts','packages/backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-jest-
+
+      # 6) Run your tests
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true
