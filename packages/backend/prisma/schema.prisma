@@ -16,7 +16,7 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   email     String   @unique
   name      String?
   password  String
@@ -27,21 +27,23 @@ model User {
   roleChanges RoleChange[]
 }
 
-model Invite {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  role      Role
-  used      Boolean  @default(false)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
+model PromotionToken {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  nextRole   Role
+  createdBy  String
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  usedAt     DateTime?
 }
 
 // Track when someone’s role changes
 model RoleChange {
-  id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  from      Role
-  to        Role
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  userId      String
+  previous    Role
+  next        Role
+  changedBy   String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
 }
